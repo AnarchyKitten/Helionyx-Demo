@@ -1,6 +1,13 @@
 (function () {
   'use strict';
 
+  const MODES = {
+    'overall':    { wv: 0.35, wg: 0.40, wt: 0.25, label: 'Overall' },
+    'trading':    { wv: 0.10, wg: 0.20, wt: 0.70, label: 'Pure Trading' },
+    'growth-val': { wv: 0.50, wg: 0.50, wt: 0.00, label: 'Growth + Valuation' },
+  };
+  let activeMode = 'overall';
+
   let data = null;
   const view = document.getElementById('view');
 
@@ -92,10 +99,27 @@
   }
 
   function renderRanking() {
-    const all = data.entities;
+    const m = MODES[activeMode];
+    const round1 = n => Math.round(n * 10) / 10;
+    const all = data.entities.map(e => ({
+      ...e,
+      overall_score: round1(
+        (e.value_score || 0) * m.wv +
+        (e.growth_score || 0) * m.wg +
+        (e.trading_score || 0) * m.wt
+      ),
+    }));
     const bullish = all.filter(e => e.overall_score > 0).sort((a, b) => b.overall_score - a.overall_score);
     const bearish = all.filter(e => e.overall_score < 0).sort((a, b) => a.overall_score - b.overall_score);
     const neutral = all.filter(e => e.overall_score === 0).sort((a, b) => b.signal_count - a.signal_count);
+
+    const modeBar = `
+      <div class="mode-bar" role="tablist" aria-label="Scoring mode">
+        ${Object.entries(MODES).map(([key, mode]) => `
+          <button class="mode-pill ${key === activeMode ? 'active' : ''}" data-mode="${key}" role="tab" aria-selected="${key === activeMode}">${esc(mode.label)}</button>
+        `).join('')}
+        <span class="mode-weights">V=${m.wv.toFixed(2)} · G=${m.wg.toFixed(2)} · T=${m.wt.toFixed(2)}</span>
+      </div>`;
 
     view.innerHTML = `
       <section class="hero">
@@ -108,6 +132,7 @@
           <span class="pol-neu">${neutral.length} neutral</span>
         </p>
       </section>
+      ${modeBar}
       ${rankingTable('Bullish Book', 'Positive bias', bullish, 'pos')}
       ${rankingTable('Bearish Book', 'Negative bias', bearish, 'neg')}
       ${rankingTable('Neutral Coverage', 'Mixed / balanced', neutral, 'neu')}
@@ -216,6 +241,15 @@
     if (m) renderEntity(decodeURIComponent(m[1]));
     else renderRanking();
   }
+
+  view.addEventListener('click', (e) => {
+    const pill = e.target.closest('.mode-pill');
+    if (!pill || pill.classList.contains('active')) return;
+    const mode = pill.dataset.mode;
+    if (!MODES[mode]) return;
+    activeMode = mode;
+    renderRanking();
+  });
 
   fetch('data.json')
     .then(r => r.ok ? r.json() : Promise.reject('HTTP ' + r.status))

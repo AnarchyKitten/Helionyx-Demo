@@ -101,6 +101,49 @@ main {
 .kicker-neg { color: var(--red); }
 .kicker-neu { color: var(--purple); }
 
+/* ---------- Scoring mode pills ---------- */
+.mode-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+.mode-pill {
+  appearance: none;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-dim);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.4rem 0.85rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.mode-pill:hover {
+  color: var(--text);
+  background: var(--bg-tier3);
+}
+.mode-pill.active {
+  background: var(--bg-tier3);
+  color: var(--text-bright);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(88, 166, 255, 0.25);
+}
+.mode-weights {
+  margin-left: auto;
+  font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  padding: 0 0.5rem;
+}
+
 /* ---------- Surface ---------- */
 .surface {
   background: var(--bg-surface);
