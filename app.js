@@ -13,6 +13,11 @@
     const v = Number(n);
     return (sign && v >= 0 ? '+' : '') + v.toFixed(1);
   }
+  function fmtPrice(p) {
+    if (p == null || isNaN(p)) return null;
+    const v = Number(p);
+    return '$' + (v >= 1 ? v.toFixed(2) : v.toFixed(4));
+  }
   function polClass(p) {
     if (p === 'positive') return 'pos';
     if (p === 'negative') return 'neg';
@@ -156,7 +161,14 @@
       <section class="entity-hero">
         <a href="#/" class="back">← Back to ranking</a>
         <div class="entity-title">
-          <h1>${esc(entity.ticker)}</h1>
+          <div class="entity-headline">
+            <h1>${esc(entity.ticker)}</h1>
+            ${fmtPrice(entity.price) ? `
+              <div class="entity-price">
+                <span class="price-num">${fmtPrice(entity.price)}</span>
+                ${entity.change_pct != null ? `<span class="price-change ${entity.change_pct >= 0 ? 'pos' : 'neg'}">${entity.change_pct >= 0 ? '+' : ''}${Number(entity.change_pct).toFixed(2)}%<span class="price-period">30d</span></span>` : ''}
+              </div>` : ''}
+          </div>
           <div class="entity-name">${esc(entity.name)}</div>
           ${entity.sector ? `<div class="entity-sector">${esc(entity.sector)}</div>` : ''}
         </div>
