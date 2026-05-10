@@ -592,80 +592,69 @@ main {
   .surface-header h2 { font-size: 1rem; }
   .meta { font-size: 0.72rem; }
 
-  /* Ranking — table flattens to cards */
+  /* Ranking — table flattens to compact 2-line cards */
   .table-wrap { overflow: visible; }
-  .ranking-table { font-size: 0.82rem; }
+  .ranking-table { font-size: 0.8rem; }
   .ranking-table thead { display: none; }
   .ranking-table tbody, .ranking-table tr, .ranking-table td { display: block; width: auto; }
-  .ranking-table tbody { display: flex; flex-direction: column; gap: 0.5rem; }
+  .ranking-table tbody { display: flex; flex-direction: column; gap: 0.35rem; }
   .ranking-table tr {
     background: var(--bg-inset);
     border: 1px solid var(--border-soft);
-    border-radius: 8px;
-    padding: 0.7rem 0.85rem;
+    border-radius: 7px;
+    padding: 0.5rem 0.75rem;
     display: grid;
     grid-template-columns: auto 1fr auto;
-    grid-template-areas:
-      "idx entity sigs"
-      "scores scores scores";
-    column-gap: 0.7rem;
-    row-gap: 0.55rem;
-    align-items: start;
+    column-gap: 0.6rem;
+    align-items: center;
   }
   .ranking-table tbody tr:hover { background: var(--bg-inset); }
   .ranking-table td { padding: 0; border: none; }
   .ranking-table .idx {
-    grid-area: idx;
     width: auto;
     text-align: left;
     color: var(--text-dim);
     font-size: 0.72rem;
     font-weight: 600;
-    padding-top: 0.15rem;
+    align-self: center;
   }
   .ranking-table .idx::before { content: '#'; }
-  .ranking-table tr td:nth-child(2) { grid-area: entity; min-width: 0; }
-  .ranking-table tr td:nth-child(3) { grid-area: scores; }
-  .ranking-table tr td:nth-child(4) { grid-area: sigs; text-align: right; }
+  .ranking-table tr td:nth-child(2) { min-width: 0; }
+  .ranking-table tr td:nth-child(4) { text-align: right; }
 
-  .ticker-row { gap: 0.5rem; }
-  .entity-cell .ticker { font-size: 1rem; }
-  .row-price { font-size: 0.8rem; }
-  .row-change { font-size: 0.75rem; }
+  .entity-cell { gap: 0; }
+  .ticker-row { gap: 0.45rem; }
+  .entity-cell .ticker { font-size: 0.92rem; }
+  .row-price { font-size: 0.74rem; }
+  .row-change { font-size: 0.7rem; }
+  .entity-cell .name { font-size: 0.68rem; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sector-inline { font-size: 0.65rem; }
 
-  /* Score bars on mobile → 4 compact cells */
+  /* Mobile: hide V/G/T, show only Overall as a clean inline number */
   .scores {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.3rem;
+    display: block;
     min-width: 0;
   }
-  .score-line {
+  .scores .score-line:not(:first-child) { display: none; }
+  .scores .score-line {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    background: var(--bg-canvas);
-    border-radius: 5px;
-    padding: 0.3rem 0.2rem;
-    gap: 0.1rem;
+    align-items: flex-end;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    gap: 0;
   }
   .score-track { display: none; }
-  .score-label {
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 0.62rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
+  .scores .score-label { display: none; }
   .score-num {
-    text-align: center;
-    font-size: 0.86rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.15;
     font-family: "SFMono-Regular", Consolas, Menlo, monospace;
   }
 
-  .sigsum { gap: 0.05rem; align-items: flex-end; }
-  .sigsum .total { font-size: 0.78rem; }
-  .sigsum .split { font-size: 0.72rem; }
+  .sigsum { display: none; }
 
   /* Entity hero — smaller hero on mobile */
   .entity-hero { padding: 1rem; margin-bottom: 1rem; border-radius: 8px; }
