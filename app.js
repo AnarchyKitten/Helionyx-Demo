@@ -71,9 +71,11 @@
               <tr>
                 <td class="idx">${i + 1}</td>
                 <td><a class="entity-cell" href="#/${encodeURIComponent(e.ticker)}">
-                  <span class="ticker">${esc(e.ticker)}</span>
-                  <span class="name">${esc(e.name)}</span>
-                  ${e.sector ? `<span class="sector">${esc(e.sector)}</span>` : ''}
+                  <span class="ticker-row">
+                    <span class="ticker">${esc(e.ticker)}</span>
+                    ${fmtPrice(e.price) ? `<span class="row-price">${fmtPrice(e.price)}${e.change_pct != null ? ` <span class="row-change ${e.change_pct >= 0 ? 'pos' : 'neg'}">${e.change_pct >= 0 ? '+' : ''}${Number(e.change_pct).toFixed(1)}%</span>` : ''}</span>` : ''}
+                  </span>
+                  <span class="name">${esc(e.name)}${e.sector ? ` <span class="sector-inline">· ${esc(e.sector)}</span>` : ''}</span>
                 </a></td>
                 <td>
                   <div class="scores">
